@@ -14,13 +14,14 @@ STATUS_CHOICES = (
 )
 
 class Patient(models.Model):
-    name = models.CharField(max_length=100, help_text="Full name of the patient")
+    patient_id = models.AutoField(primary_key=True)
+    patient_name = models.CharField(max_length=100, help_text="Full name of the patient")
     age = models.IntegerField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.patient_name
 
 class Test(models.Model):
     test_name = models.CharField(max_length=100, unique=True)
@@ -39,7 +40,7 @@ class LabReport(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     result_value = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    result_date = models.DateTimeField(auto_now=True)
+    result_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.patient, self.test
+        return f"{self.patient.patient_name} - {self.test.test_name}"
